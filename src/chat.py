@@ -67,7 +67,7 @@ class Chat:
             # Get user's query and session ID
             #session_id = self.get_request_data("sessionID")
             #query = self.get_request_data("query")
-            session_id = '11111'
+            session_id = sessionID
             query = query
 
             if not query or not session_id:
