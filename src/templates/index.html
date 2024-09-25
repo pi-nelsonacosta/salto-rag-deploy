@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <title>RAG Salto Lab (Flask)</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-box">
-            <!-- Messages will be dynamically inserted here -->
+            <!-- Mensajes se insertarán dinámicamente aquí -->
         </div>
-        <div class="progress-bar" id="progressBar" style="visibility: hidden;"></div>
+        <div class="progress-bar" id="progressBar" style="visibility: hidden;">
+            <div class="spinner"></div> <!-- Spinner mejorado -->
+        </div>
     </div>
     <div class="input-area">
-        <input type="text" id="chatInput" placeholder="Write here...">
-        <button onclick="sendMessage()">Send</button>
+        <input type="text" id="chatInput" placeholder="Escribe aquí...">
+        <button onclick="sendMessage()">Enviar</button>
     </div>
-    <script src="static/script.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>

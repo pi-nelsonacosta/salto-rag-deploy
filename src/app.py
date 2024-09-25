@@ -1,9 +1,10 @@
 import os
 import logging
-from flask import Flask, jsonify, render_template, request
-from .chat import Chat
+from flask import Flask, jsonify, render_template, request, session
+from chat import Chat
 from config.parameters import Parameters
 from dotenv import load_dotenv
+import uuid
 
 load_dotenv()
 
@@ -26,18 +27,30 @@ chat = Chat()
 
 @app.route("/chat", methods=["POST"])
 def virtual_assistant():
-    """Endpoint for handling chat requests."""
+    """Endpoint para manejar las solicitudes de chat."""
     try:
         logger.info("Processing chat request...")
-        #chat_response = chat.run()
-        data = request.get_json(force=True)  # force=True helps avoid errors if the mimetype is not application/json
-        logger.info(f"Received data: {data}")
-        sessionID = data.get('sessionID')
-        query = data.get('query')
-        if not sessionID or not query:
-            logger.error("Missing 'sessionID' or 'query' in the request.")
-            return jsonify({"error": "Missing 'sessionID' or 'query' in the request."}), 400
 
+        # Intentar obtener el sessionID de la sesión almacenada en la cookie
+        sessionID = session.get('sessionID')
+
+        # Si no existe sessionID en la sesión, generar uno nuevo
+        if not sessionID:
+            sessionID = str(uuid.uuid4())  # Generar un nuevo sessionID único
+            session['sessionID'] = sessionID  # Guardar en la sesión
+
+        # Obtener los datos de la solicitud
+        data = request.get_json(force=True)  # Asegurarse de recibir JSON
+        logger.info(f"Received data: {data}")
+        
+        query = data.get('query')
+
+        # Verificar si hay query
+        if not query:
+            logger.error("Missing 'query' in the request.")
+            return jsonify({"error": "Missing 'query' in the request."}), 400
+
+        # Procesar la solicitud de chat
         chat_response = chat.run(sessionID, query)
         return chat_response
     except KeyError as e:
@@ -46,7 +59,7 @@ def virtual_assistant():
     except Exception as e:
         logger.error(f"Error during chat processing: {e}")
         return jsonify({"error": str(e)}), 500
-
+    
 def start_app():
     """Starts the Flask application."""
     # Set local parameters
