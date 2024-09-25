@@ -64,9 +64,6 @@ class Chat:
             # Load prompt file
             system_prompt = self.read_file(f"{self.prompts_path}/system_prompt.prompt")
 
-            # Get user's query and session ID
-            #session_id = self.get_request_data("sessionID")
-            #query = self.get_request_data("query")
             session_id = sessionID
             query = query
 

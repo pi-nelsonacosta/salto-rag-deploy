@@ -10,6 +10,6 @@
     "k_nearest_neighbors": 1,
     "fields": "text_vector",
     "top": 1,
-    "database_name": "db-cxp-mvp-virtual-assistant",
+    "database_name": "db-saltolabs",
     "container_name": "chat_history"
 }
