@@ -1,80 +1,83 @@
-# Salto Labs Project
+## Contents
+[RAG Model](#rag-model-robot)<br>
+- [Overview](#mag-overview)<br>
+- [Components](#open_file_folder-components)<br>
+- [Tools Used](#hammer_and_wrench-tools-used)<br>
+- [Getting Started](#rocket-getting-started)<br>
+<!--- - [References](#books-references)<br> -->
 
-Este proyecto es una aplicación RAG basada en Flask que integra varios servicios como Azure OpenAI, Azure AI Search, y CosmosDB.
+# Simple RAG in Azure :robot:
 
-## Estructura del Proyecto
+**`........`**
 
-- **`main.py`**: Archivo principal que inicia la aplicación.
-- **`chat.py`**: Define la clase `Chat`, que es responsable de procesar las solicitudes del chat de los usuarios. Las principales funciones incluyen:
+## :mag: Overview
+......
 
-- **Carga de parámetros**: Carga parámetros de configuración desde un archivo para definir rutas y otros ajustes.
-- **Procesamiento de consultas**: Recibe y maneja solicitudes de chat, obteniendo las consultas enviadas por el usuario.
+## :open_file_folder: Components
+Below is a breakdown of the key components included in this repository:
 
-- **Gestión de archivos**: Permite leer archivos necesarios para procesar correctamente las solicitudes.
-- **`app.py`**: Este archivo es el punto de entrada de la aplicación Flask y expone los endpoints principales:
-- **`/`**: Sirve la página principal de la aplicación web.
-- **`/chat`**: Endpoint que recibe solicitudes POST con consultas de los usuarios y devuelve respuestas procesadas por el archivo `chat.py`.
+- [**`config/`**](config/): Project documentation.
 
-- **Gestión de sesiones**: Asigna un `sessionID` único a cada usuario para mantener el estado de la sesión.
-- **Arranque de la aplicación**: Ejecuta la aplicación Flask en el host y puerto especificados en los parámetros de configuración.
+- [**`prompts/`**](prompts/): Test cases documentation.
 
-- **Servicios** (`services/`): Implementaciones de servicios que interactúan con APIs y bases de datos.
-  - `azopenai.py`: Servicio para interactuar con la API de OpenAI de Azure.
-  - `azureaisearch.py`: Servicio para realizar búsquedas con Azure AI Search.
-  - `cosmosdb.py`: Servicio para interactuar con la base de datos CosmosDB.
-- **Configuración** (`config/`): Archivos de configuración para los parámetros de la aplicación.
-- **Estáticos** (`static/`): Contiene archivos estáticos como imágenes, estilos y scripts.
-- **Plantillas** (`templates/`): Contiene las plantillas HTML para la aplicación web.
+- [**`services/`**](services/): Test cases documentation.
 
-## Requisitos
+- [**`src/`**](src/): Source files for the application.
+  - [`__init__.py`](src/__init__.py): Initializes src as a Python module.
+  - [`main.py`](src/main.py): Main script to run the application.
+  - [`app.py`](src/app.py): Flask application endpoints.
+  - [`rag_model.py`](src/rag_model.py): RAG Model functionality and methods.
 
-Para ejecutar este proyecto, asegúrate de tener instaladas las siguientes dependencias:
+- [**`requirements.txt`**](requirements.txt): Python dependencies.
 
-## Instrucciones para Windows
+- [**`.gitignore`**](.gitignore): Specifies intentionally untracked files to ignore.
 
-1. Abre una terminal (CMD o PowerShell) y navega hasta la carpeta del proyecto.
-   
-2. Crea el entorno virtual con el siguiente comando:
+- [**`README.md`**](README.md): Detailed description of the project.
 
-   ```bash
-   python -m venv venv
-
-3. Activa el entorno virtual con el siguiente comando:
-   
-    ```bash
-    venv\Scripts\activate
-
-4. Instala las dependencias del proyecto utilizando el siguiente comando:
-
-   ```bash
-   pip install -r requirements.txt
+- [**`LICENSE`**](LICENSE): MIT License information.
 
 
-## Instrucciones para macOS/Linux
+## :hammer_and_wrench: Tools Used
+The following tools are utilized in this project:
 
-1. Abre una terminal y navega hasta la carpeta del proyecto.
+1. **LangChain**
+2. **Flask**
+3. **GPT-4o**
+4. **ChromaDB**
 
-2. Crea el entorno virtual con el siguiente comando:
+## :rocket: Getting Started
+Follow these steps to set up and run the project on your local machine:
 
-   ```bash
-   python3 -m venv venv
+1. **Clone the repository:**
 
-3. Activa el entorno virtual con el siguiente comando:
+``` bash
+git clone https://github.com/jairzinhosantos/rag-llm-model.git
+```
 
-   ```bash
-   source venv/bin/activate
+3. **Set up a virtual environment:**
 
-4. Instala las dependencias del proyecto utilizando el siguiente comando:  
+``` bash
+python -m venv venv
+source venv/bin/activate
+```
 
-   ```bash
-   pip install -r requirements.txt
+4. **Install dependencies:**
+
+``` bash
+pip install -r requirements.txt
+```
+
+5. **Run the application:**
+
+``` bash
+python src/main.py
+```
 
 
-## Ejecución del Proyecto
-
-Una vez que hayas creado y activado el entorno virtual e instalado las dependencias, puedes ejecutar la aplicación con:
-
-   ```bash
-   uvicorn main:app --reload
-
-- Esto iniciará la aplicación en modo de desarrollo, y podrás acceder a la API en http://127.0.0.1:8080/.
+<!---
+## :books: References
+[^1]: [x](y)
+[^2]: [x](y)
+[^3]: [x](y)
+[^4]: [x](y)
+-->

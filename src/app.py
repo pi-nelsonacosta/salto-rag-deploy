@@ -1,6 +1,7 @@
 import os
 import logging
 from flask import Flask, jsonify, render_template, request, session
+from flask_cors import CORS
 from chat import Chat
 from config.parameters import Parameters
 from dotenv import load_dotenv
@@ -13,9 +14,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize the Flask application
-#app = Flask(__name__)
-app = Flask(__name__, static_folder='static', template_folder='templates')
+app = Flask(__name__)
+#app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
+cors=CORS(app, resources={r"*": {"origins":"*"}}, expose_headers='Authorization')
 
 @app.route("/")
 def index():
@@ -40,7 +43,11 @@ def virtual_assistant():
             session['sessionID'] = sessionID  # Guardar en la sesión
 
         # Obtener los datos de la solicitud
-        data = request.get_json(force=True)  # Asegurarse de recibir JSON
+        data = request.get_json(silent=True)  # Cambia force=True a silent=True para no lanzar errores
+        if data is None:
+            logger.error("No se recibió JSON en la solicitud.")
+            return jsonify({"error": "No se recibió JSON en la solicitud."}), 400
+
         logger.info(f"Received data: {data}")
         
         query = data.get('query')
