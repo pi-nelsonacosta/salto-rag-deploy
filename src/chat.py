@@ -68,7 +68,7 @@ class Chat:
             query = query
 
             if not query or not session_id:
-                return jsonify({"error": "Query or SessionID not provided"}), 400
+                return {"error": "Query or SessionID not provided"}, 400
             
             messages_history = []
 
@@ -92,7 +92,7 @@ class Chat:
             message_assistant_save = [{"role": "assistant", "content": response}]
             azurecosmos.run(session_id, 'I', message_assistant_save)
 
-            return jsonify({"response": response}), 200
+            return {"response": response}, 200
         except Exception as e:
             logger.error(f"Error generating model response: {e}")
-            return jsonify({"error": str(e)}), 500
+            return {"error": str(e)}, 500

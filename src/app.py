@@ -34,22 +34,21 @@ def virtual_assistant():
     try:
         logger.info("Processing chat request...")
 
-        # Intentar obtener el sessionID de la sesión almacenada en la cookie
-        sessionID = session.get('sessionID')
+        # Intentar obtener el sessionID de la solicitud o de la sesión almacenada en la cookie
+        data = request.get_json(silent=True)
+        if not data:
+            logger.error("No se recibió JSON en la solicitud.")
+            return jsonify({"error": "No se recibió JSON en la solicitud."}), 400
+
+        sessionID = data.get('sessionID') or session.get('sessionID')
 
         # Si no existe sessionID en la sesión, generar uno nuevo
         if not sessionID:
             sessionID = str(uuid.uuid4())  # Generar un nuevo sessionID único
             session['sessionID'] = sessionID  # Guardar en la sesión
 
-        # Obtener los datos de la solicitud
-        data = request.get_json(silent=True)  # Cambia force=True a silent=True para no lanzar errores
-        if data is None:
-            logger.error("No se recibió JSON en la solicitud.")
-            return jsonify({"error": "No se recibió JSON en la solicitud."}), 400
-
         logger.info(f"Received data: {data}")
-        
+
         query = data.get('query')
 
         # Verificar si hay query
@@ -58,8 +57,20 @@ def virtual_assistant():
             return jsonify({"error": "Missing 'query' in the request."}), 400
 
         # Procesar la solicitud de chat
-        chat_response = chat.run(sessionID, query)
-        return chat_response
+        chat_response, status_code = chat.run(sessionID, query)
+
+        # Verificar si hubo un error en la respuesta de `chat.run()`
+        if status_code != 200:
+            return jsonify({"error": chat_response.get("error")}), status_code
+
+        # Devolver la respuesta del asistente junto con el sessionID
+        response_data = {
+            "response": chat_response.get("response"),
+            "sessionID": sessionID
+        }
+
+        return jsonify(response_data), status_code
+
     except KeyError as e:
         logger.error(f"Missing key in JSON data: {e}")
         return jsonify({"error": f"Missing key in JSON data: {e}"}), 400
