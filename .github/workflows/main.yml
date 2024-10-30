@@ -1,4 +1,4 @@
-name: (Develop) Build and deploy Python app to Azure Web App Salto Project
+name: (Develop) Build and deploy Python app to Azure Web App Salto Project (Develop)
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
@@ -39,12 +39,11 @@ jobs:
             release.zip
             !venv/
 
-  deploy:
+  deploy-develop:
     runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Develop'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
       - name: Download artifact from build job
@@ -72,10 +71,11 @@ jobs:
           echo "COSMOS_DB_CONTAINER_EVALS=${{ secrets.COSMOS_DB_CONTAINER_EVALS }}" >> .env
           echo "FLASK_SECRET_KEY=${{ secrets.FLASK_SECRET_KEY }}" >> .env
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App (Develop)
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: "apptestingdeploy"
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          app-name: "apptestingdeploy-develop"
+          slot-name: 'Development'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEVELOP }}
+
