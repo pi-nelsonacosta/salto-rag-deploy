@@ -26,6 +26,7 @@ openai==1.25.2
 orjson==3.10.3
 requests==2.31.0
 requests-oauthlib==2.0.0
+waitress
 Werkzeug==3.0.2
 wrapt==1.16.0
 yarg==0.1.9
