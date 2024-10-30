@@ -78,11 +78,7 @@ def virtual_assistant():
         logger.error(f"Error during chat processing: {e}")
         return jsonify({"error": str(e)}), 500
     
-def start_app():
+if __name__ == "__main__":
     """Starts the Flask application."""
     # Set local parameters
-    host=parameters.get("host", "127.0.0.1")
-    port=parameters.get("port", 5000)
-
-    # Run app
-    app.run()
+    app.run(host="0.0.0.0")
