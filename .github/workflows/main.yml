@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Python version
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
           python-version: '3.10.15'
 
@@ -29,7 +29,7 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip ./* -x "venv/*"
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -55,22 +55,22 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      - name: Set environment variables
+      - name: Write environment variables to .env file
         run: |
-          echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
-          echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
-          echo "AZURE_OPENAI_API_VERSION=${{ secrets.AZURE_OPENAI_API_VERSION }}" >> $GITHUB_ENV
-          echo "AZURE_OPENAI_DEPLOYMENT_NAME=${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}" >> $GITHUB_ENV
-          echo "AZURE_AI_SEARCH_ENDPOINT=${{ secrets.AZURE_AI_SEARCH_ENDPOINT }}" >> $GITHUB_ENV
-          echo "AZURE_AI_SEARCH_KEY=${{ secrets.AZURE_AI_SEARCH_KEY }}" >> $GITHUB_ENV
-          echo "AZURE_AI_SEARCH_INDEX_NAME=${{ secrets.AZURE_AI_SEARCH_INDEX_NAME }}" >> $GITHUB_ENV
-          echo "SEMANTIC_CONFIGURATION_NAME=${{ secrets.SEMANTIC_CONFIGURATION_NAME }}" >> $GITHUB_ENV
-          echo "COSMOSDB_ENDPOINT=${{ secrets.COSMOSDB_ENDPOINT }}" >> $GITHUB_ENV
-          echo "COSMOSDB_PRIMARY_KEY=${{ secrets.COSMOSDB_PRIMARY_KEY }}" >> $GITHUB_ENV
-          echo "COSMOS_DB_DATABASE_NAME=${{ secrets.COSMOS_DB_DATABASE_NAME }}" >> $GITHUB_ENV
-          echo "COSMOS_DB_CONTAINER_HISTORY=${{ secrets.COSMOS_DB_CONTAINER_HISTORY }}" >> $GITHUB_ENV
-          echo "COSMOS_DB_CONTAINER_EVALS=${{ secrets.COSMOS_DB_CONTAINER_EVALS }}" >> $GITHUB_ENV
-          echo "FLASK_SECRET_KEY=${{ secrets.FLASK_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> .env
+          echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> .env
+          echo "AZURE_OPENAI_API_VERSION=${{ secrets.AZURE_OPENAI_API_VERSION }}" >> .env
+          echo "AZURE_OPENAI_DEPLOYMENT_NAME=${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}" >> .env
+          echo "AZURE_AI_SEARCH_ENDPOINT=${{ secrets.AZURE_AI_SEARCH_ENDPOINT }}" >> .env
+          echo "AZURE_AI_SEARCH_KEY=${{ secrets.AZURE_AI_SEARCH_KEY }}" >> .env
+          echo "AZURE_AI_SEARCH_INDEX_NAME=${{ secrets.AZURE_AI_SEARCH_INDEX_NAME }}" >> .env
+          echo "SEMANTIC_CONFIGURATION_NAME=${{ secrets.SEMANTIC_CONFIGURATION_NAME }}" >> .env
+          echo "COSMOSDB_ENDPOINT=${{ secrets.COSMOSDB_ENDPOINT }}" >> .env
+          echo "COSMOSDB_PRIMARY_KEY=${{ secrets.COSMOSDB_PRIMARY_KEY }}" >> .env
+          echo "COSMOS_DB_DATABASE_NAME=${{ secrets.COSMOS_DB_DATABASE_NAME }}" >> .env
+          echo "COSMOS_DB_CONTAINER_HISTORY=${{ secrets.COSMOS_DB_CONTAINER_HISTORY }}" >> .env
+          echo "COSMOS_DB_CONTAINER_EVALS=${{ secrets.COSMOS_DB_CONTAINER_EVALS }}" >> .env
+          echo "FLASK_SECRET_KEY=${{ secrets.FLASK_SECRET_KEY }}" >> .env
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
