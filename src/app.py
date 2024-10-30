@@ -85,4 +85,4 @@ def start_app():
     port=parameters.get("port", 5000)
 
     # Run app
-    app.run(host=host, port=port, debug=True)
+    app.run()
