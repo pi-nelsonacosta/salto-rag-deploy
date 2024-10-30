@@ -25,7 +25,7 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
@@ -55,8 +55,24 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
-      - name: 'Deploy to Azure Web App'
+      - name: Set environment variables
+        run: |
+          echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_API_VERSION=${{ secrets.AZURE_OPENAI_API_VERSION }}" >> $GITHUB_ENV
+          echo "AZURE_OPENAI_DEPLOYMENT_NAME=${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}" >> $GITHUB_ENV
+          echo "AZURE_AI_SEARCH_ENDPOINT=${{ secrets.AZURE_AI_SEARCH_ENDPOINT }}" >> $GITHUB_ENV
+          echo "AZURE_AI_SEARCH_KEY=${{ secrets.AZURE_AI_SEARCH_KEY }}" >> $GITHUB_ENV
+          echo "AZURE_AI_SEARCH_INDEX_NAME=${{ secrets.AZURE_AI_SEARCH_INDEX_NAME }}" >> $GITHUB_ENV
+          echo "SEMANTIC_CONFIGURATION_NAME=${{ secrets.SEMANTIC_CONFIGURATION_NAME }}" >> $GITHUB_ENV
+          echo "COSMOSDB_ENDPOINT=${{ secrets.COSMOSDB_ENDPOINT }}" >> $GITHUB_ENV
+          echo "COSMOSDB_PRIMARY_KEY=${{ secrets.COSMOSDB_PRIMARY_KEY }}" >> $GITHUB_ENV
+          echo "COSMOS_DB_DATABASE_NAME=${{ secrets.COSMOS_DB_DATABASE_NAME }}" >> $GITHUB_ENV
+          echo "COSMOS_DB_CONTAINER_HISTORY=${{ secrets.COSMOS_DB_CONTAINER_HISTORY }}" >> $GITHUB_ENV
+          echo "COSMOS_DB_CONTAINER_EVALS=${{ secrets.COSMOS_DB_CONTAINER_EVALS }}" >> $GITHUB_ENV
+          echo "FLASK_SECRET_KEY=${{ secrets.FLASK_SECRET_KEY }}" >> $GITHUB_ENV
+
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
