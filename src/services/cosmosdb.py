@@ -2,7 +2,6 @@ import os
 import json
 import logging
 from azure.cosmos import CosmosClient, exceptions, PartitionKey
-from dotenv import load_dotenv
 from config.parameters import Parameters
 
 # Configure logging
@@ -27,7 +26,7 @@ class AzureCosmosDBClient:
     def load_env_var():
         """Loads necessary environment variables for CosmosDB."""
         try:
-            load_dotenv()
+
             required_vars = [
                     "COSMOSDB_ENDPOINT",
                     "COSMOSDB_PRIMARY_KEY"

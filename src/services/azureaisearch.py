@@ -1,6 +1,5 @@
 import os
 import logging
-from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
@@ -37,7 +36,6 @@ class AzureAISearchClient:
     def load_env_var():
         """Loads necessary environment variables for Azure AI Search."""
         try:
-            load_dotenv()
             required_vars = [
                     "AZURE_AI_SEARCH_ENDPOINT",
                     "AZURE_AI_SEARCH_KEY",

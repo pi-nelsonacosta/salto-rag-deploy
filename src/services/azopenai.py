@@ -1,6 +1,5 @@
 import os
 import logging
-from dotenv import load_dotenv
 from openai import AzureOpenAI
 from config.parameters import Parameters
 
@@ -26,7 +25,6 @@ class AzureOpenAIClient:
     def load_env_var():
         """Loads necessary environment variables for Azure OpenAI."""
         try:
-            load_dotenv()
             required_vars = [
                     "AZURE_OPENAI_ENDPOINT",
                     "AZURE_OPENAI_API_KEY",
