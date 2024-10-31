@@ -1,4 +1,4 @@
-name: (Develop) Build and deploy Python app to Azure Web App Salto Project
+name: (Develop) Build and deploy Dockerized Python app to Azure Web App Salto Project
 
 on:
   push:
@@ -7,53 +7,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python version
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.10.15'
+      - name: Set up QEMU for multi-platform builds
+        uses: docker/setup-qemu-action@v2
 
-      - name: Install dependencies (for local testing only)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build and push Docker image
         run: |
-          pip install -r requirements.txt
-          # Nota: Esta instalación es opcional, solo se usa si quieres ejecutar pruebas en GitHub Actions
-          # Antes de desplegar. Azure Web App instalará los requisitos de requirements.txt automáticamente.
+          docker build -t ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest .
+          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
-        with:
-          name: python-app
-          path: |
-            release.zip
-            !venv/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Develop'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: python-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: Set environment variables
+      - name: Set environment variables for Azure Web App
         run: |
           echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
           echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
@@ -70,10 +48,11 @@ jobs:
           echo "COSMOS_DB_CONTAINER_EVALS=${{ secrets.COSMOS_DB_CONTAINER_EVALS }}" >> $GITHUB_ENV
           echo "FLASK_SECRET_KEY=${{ secrets.FLASK_SECRET_KEY }}" >> $GITHUB_ENV
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App using Docker image
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: "apptestingdeploy"
           slot-name: 'Production'
+          images: "${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
