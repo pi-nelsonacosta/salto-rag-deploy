@@ -1,8 +1,12 @@
 import os
 import logging
 from flask import Flask, jsonify, render_template, request, session
+from chat import Chat
 from config.parameters import Parameters
+from dotenv import load_dotenv
 import uuid
+
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -48,6 +52,7 @@ def virtual_assistant():
             return jsonify({"error": "Missing 'query' in the request."}), 400
 
         # Procesar la solicitud de chat
+        chat = Chat()
         chat_response, status_code = chat.run(sessionID, query)
 
         # Verificar si hubo un error en la respuesta de `chat.run()`
