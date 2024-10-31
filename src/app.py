@@ -92,4 +92,4 @@ def virtual_assistant():
 if __name__ == "__main__":
     """Starts the Flask application."""
     # Set local parameters
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=5000)
