@@ -22,12 +22,20 @@ def index():
 
 @app.route("/check_env")
 def check_env():
-    python_path = sys.executable  # Muestra el path del ejecutable de Python
-    installed_packages = os.popen("pip freeze").read()  # Muestra los paquetes instalados en el entorno
+    python_path = sys.executable  # Ruta del ejecutable de Python
+    installed_packages = os.popen("pip freeze").read()  # Paquetes instalados
+    
+    # Listar archivos en el directorio raíz de la aplicación
+    root_files = os.listdir("/home/site/wwwroot")  # Ruta raíz en Azure Web App
+    has_requirements = "requirements.txt" in root_files
+
     return jsonify({
         "python_path": python_path,
-        "installed_packages": installed_packages
+        "installed_packages": installed_packages,
+        "root_files": root_files,  # Lista todos los archivos en el directorio raíz
+        "requirements_txt_exists": has_requirements  # Confirma si requirements.txt está presente
     })
+
 
 @app.route("/chat", methods=["POST"])
 def virtual_assistant():
