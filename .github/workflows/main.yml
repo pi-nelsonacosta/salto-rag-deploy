@@ -18,6 +18,13 @@ jobs:
         with:
           python-version: '3.10.15'
 
+      - name: Remove old virtual environment if it exists
+        run: |
+          if [ -d "antenv" ]; then
+            rm -rf antenv
+          fi
+        shell: bash    
+
       - name: Create and start virtual environment
         run: |
           python -m venv antenv
