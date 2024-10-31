@@ -26,6 +26,10 @@ jobs:
           username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
+      # Paso temporal para verificar docker login
+      - name: Verify Docker login
+        run: docker login ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }} -u ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
+
       - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest .
