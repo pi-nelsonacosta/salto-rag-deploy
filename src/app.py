@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-@app.route("/")
-def index():
-    return render_template('index.html')
-
 # Initialize chat handler
 parameters = Parameters().parameters
 chat = Chat()
+
+@app.route("/")
+def index():
+    return render_template('index.html')
 
 @app.route("/chat", methods=["POST"])
 def virtual_assistant():
