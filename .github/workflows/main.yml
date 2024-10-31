@@ -54,13 +54,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
-      - name: Remove old virtual environment on Azure
-        run: |
-          if [ -d "antenv" ]; then
-            rm -rf antenv
-          fi
-
+      
       - name: Set environment variables
         run: |
           echo "AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}" >> $GITHUB_ENV
