@@ -4,6 +4,7 @@ from flask import Flask, jsonify, render_template, request, session
 from config.parameters import Parameters
 import uuid
 import sys
+from chat import Chat
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -15,6 +16,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "0#$%&kLSOKMC#5&/(/sdfk{%}_)")
 
 # Initialize chat handler
 parameters = Parameters().parameters
+chat = Chat()
 
 @app.route("/")
 def index():
