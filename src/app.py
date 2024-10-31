@@ -2,7 +2,7 @@ import os
 import logging
 from flask import Flask, jsonify, render_template, request, session
 from config.parameters import Parameters
-from dotenv import load_dotenv
+from dotenv.main import load_dotenv
 import uuid
 from chat import Chat
 
