@@ -1,6 +1,7 @@
 import os
 import logging
 from flask import Flask, jsonify, render_template, request, session
+from flask_cors import CORS  # Importa CORS
 from config.parameters import Parameters
 import uuid
 import sys
@@ -13,6 +14,9 @@ logger = logging.getLogger(__name__)
 # Initialize the Flask application
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "0#$%&kLSOKMC#5&/(/sdfk{%}_)")
+
+# Configura CORS
+CORS(app)  # Habilita CORS para todas las rutas con configuración predeterminada
 
 # Initialize chat handler
 parameters = Parameters().parameters
@@ -37,7 +41,6 @@ def check_env():
         "root_files": root_files,  # Lista todos los archivos en el directorio raíz
         "requirements_txt_exists": has_requirements  # Confirma si requirements.txt está presente
     })
-
 
 @app.route("/chat", methods=["POST"])
 def virtual_assistant():
