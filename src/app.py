@@ -4,6 +4,7 @@ from flask import Flask, jsonify, render_template, request, session
 from config.parameters import Parameters
 from dotenv import load_dotenv
 import uuid
+from chat import Chat
 
 load_dotenv()
 
@@ -13,10 +14,11 @@ logger = logging.getLogger(__name__)
 
 # Initialize the Flask application
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.secret_key = os.getenv("FLASK_SECRET_KEY")
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "0#$%&kLSOKMC#5&/(/sdfk{%}_)")
 
 # Initialize chat handler
 parameters = Parameters().parameters
+chat = Chat()
 
 @app.route("/")
 def index():

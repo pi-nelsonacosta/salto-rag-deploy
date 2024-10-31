@@ -1,6 +1,7 @@
 import json
 import logging
 from flask import request, jsonify
+from dotenv import load_dotenv
 from services.azopenai import AzureOpenAIClient
 from services.azureaisearch import AzureAISearchClient
 from services.cosmosdb import AzureCosmosDBClient
@@ -14,6 +15,8 @@ logger = logging.getLogger(__name__)
 # Set Azure SDK logging level to WARNING to reduce noise
 azure_logger = logging.getLogger("azure.core.pipeline.policies.http_logging_policy")
 azure_logger.setLevel(logging.WARNING)
+
+load_dotenv()
 
 class Chat:
     """Class to handle chat interactions."""
