@@ -3,6 +3,7 @@ import logging
 from flask import Flask, jsonify, render_template, request, session
 from config.parameters import Parameters
 import uuid
+import sys
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +19,15 @@ parameters = Parameters().parameters
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/check_env")
+def check_env():
+    python_path = sys.executable  # Muestra el path del ejecutable de Python
+    installed_packages = os.popen("pip freeze").read()  # Muestra los paquetes instalados en el entorno
+    return jsonify({
+        "python_path": python_path,
+        "installed_packages": installed_packages
+    })
 
 @app.route("/chat", methods=["POST"])
 def virtual_assistant():
