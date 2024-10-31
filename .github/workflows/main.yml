@@ -26,14 +26,15 @@ jobs:
           username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
-      # Paso temporal para verificar docker login
-      - name: Verify Docker login
-        run: docker login ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }} -u ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
-
       - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest .
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest
+
+      # Verificación de paquetes instalados en la imagen Docker
+      - name: Verify installed packages
+        run: |
+          docker run --rm ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest pip list
 
       - name: Set environment variables for Azure Web App
         run: |
