@@ -57,7 +57,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: "apptestingdeploy"
+          app-name: "apptestingdeployv2"
           slot-name: 'Production'
           images: "${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/myapp:latest"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
