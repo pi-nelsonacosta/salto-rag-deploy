@@ -1,14 +1,11 @@
 import os
 import logging
-from dotenv import load_dotenv
 from openai import AzureOpenAI
 from config.parameters import Parameters
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-load_dotenv()
 
 class AzureOpenAIClient:
     """Class to interact with Azure OpenAI service."""
